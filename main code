@@ -1,0 +1,490 @@
+#include<iostream>
+#include <string >
+#include <fstream>
+#include<regex>
+#include <cstdio>
+using namespace std;
+
+struct hum {
+    int number;
+    string email, fname, Lname, job;
+
+};
+struct node
+{
+    hum data;
+    node* next;
+
+};
+node* head = NULL, * newnode, * temp;
+int len = 0;
+
+bool isValid(const string& email)
+{
+
+    // Regular expression definition
+    const regex pattern(
+        "(\\w+)(\\.|_)?(\\w*)@(\\w+)(\\.(\\w+))+");
+
+    // Match the string pattern
+    // with regular expression
+    return regex_match(email, pattern);
+}
+
+void insert()
+{
+    // file definition
+    ofstream  File;
+
+    File.open("projict_File.txt", ios::app);
+
+    newnode = new node;
+
+    cin.ignore();
+    cout << "Enter First Name : ";
+    getline(cin, newnode->data.fname);
+    //Store first name in a file
+    File << "first name :" << "  " << newnode->data.fname << endl;
+
+    cout << "Enter Last Name : ";
+    getline(cin, newnode->data.Lname);
+    //Store last name in a file
+    File << "last name :" << "  " << newnode->data.Lname << endl;
+
+    cout << "Enter number : ";
+    cin >> newnode->data.number;
+    int c = 0;
+    while (newnode->data.number != 0)
+    {
+        newnode->data.number = newnode->data.number / 10;
+        c++;
+    }
+    if (c != 11)
+    {
+        cout << "number:" << newnode->data.number << "invalid  \n";
+        File << "invalid number \n";
+    }
+    else
+        File << "number :" << "  " << newnode->data.number << endl;
+
+    cout << "enter email : ";
+    cin >> newnode->data.email;
+    bool ans = isValid(newnode->data.email);
+    if (ans) {
+        File << "email :" << "  " << newnode->data.email << endl;
+    }
+    else {
+        cout << "email :" << newnode->data.email << "invalid" << endl;
+        File << "email :" << "invalid email" << endl;
+    };
+    cin.ignore();
+    cout << "enter job : ";
+    getline(cin, newnode->data.job);
+    //Store a email in a file
+    File << "job :" << "  " << newnode->data.job << endl;
+
+    File << "\n **************************************" << endl;
+    // close the file
+
+    File.close();
+    cout << endl;
+
+    newnode->next = NULL;
+    if (head == NULL)
+    {
+        head = newnode;
+        temp = newnode;
+    }
+    else
+    {
+        temp->next = newnode;
+        temp = newnode;
+    }
+}
+
+void display() {
+
+    ifstream File;
+    File.open("projict_File.txt");
+    string data;
+
+    while (!File.eof())
+    {
+
+        getline(File, data);
+
+        cout << data << endl;
+    }
+
+
+    File.close();
+}
+
+void searching()
+{
+    fstream File;
+    File.open("projict_File.txt");
+    string line, search;
+    cout << "Please enter the first name : ";
+    cin >> search;
+
+    while (!File.eof())
+    {
+        for (int curLine = 0; getline(File, line);)
+        {
+            if (line.find(search) != string::npos)
+            {
+                curLine++;
+                ;
+
+                string  last, number, email, job;
+
+
+                getline(File, last);
+
+                getline(File, number);
+
+                getline(File, email);
+
+                getline(File, job);
+                cout << "name is   " << search << endl;
+                cout << last << endl;
+                cout << number << endl;
+                cout << email << endl;
+                cout << job << endl;
+                File.close();
+            }
+        }
+        break;
+
+
+    }
+}
+
+void delete_node()
+{
+    string deleteline;
+    string line;
+    int x = 0;
+
+
+    ifstream File;
+    File.open("projict_File.txt");
+    ofstream temp;
+    temp.open("temp.txt");
+
+    do {
+
+        cout << "1- If you want delete first name : " << endl;
+        cout << "2- If you want delete last name : " << endl;
+        cout << "3- If you want delete number :" << endl;
+        cout << "4- If you want delete email :" << endl;
+        cout << "5- If you want delete job: " << endl;
+        cout << "6- If you want close enter : " << endl;
+        cout << " Select action >>  ";
+        cin >> x;
+        cout << " \n";
+
+
+        switch (x)
+        {
+        case 1:
+            cout << "Enter first name ? ";
+            cin >> deleteline;
+            while (getline(File, line))
+            {
+                if (line.find(deleteline) != string::npos)
+                {
+
+
+                }
+                else {
+
+                    temp << line << endl;
+                }
+            }
+
+            break;
+
+
+        case 2:
+            cout << "Enter last name ? ";
+            cin >> deleteline;
+            while (getline(File, line))
+            {
+                if (line.find(deleteline) != string::npos)
+                {
+
+
+                }
+                else {
+
+                    temp << line << endl;
+
+                }
+            }
+            break;
+
+
+        case 3:
+            cout << "Enter number ? ";
+            cin >> deleteline;
+            while (getline(File, line))
+            {
+                if (line.find(deleteline) != string::npos)
+                {
+
+
+                }
+                else {
+
+                    temp << line << endl;
+                }
+            }
+            break;
+
+        case 4:
+            cout << "Enter email ? ";
+            cin >> deleteline;
+            while (getline(File, line))
+            {
+                if (line.find(deleteline) != string::npos)
+                {
+
+
+                }
+                else
+                {
+
+                    temp << line << endl;
+                }
+            }
+            break;
+
+        case 5:
+            cout << "Enter job ? ";
+            cin >> deleteline;
+            while (getline(File, line))
+            {
+                if (line.find(deleteline) != string::npos)
+                {
+
+                }
+                else {
+
+                    temp << line << endl;
+                }
+            }
+            break;
+        }
+
+    } while (x != 6);
+
+    temp.close();
+    File.close();
+    remove("projict_File.txt");
+    rename("temp.txt", "projict_File.txt");
+
+}
+
+void edit_node()
+{
+    string oldline, editline;
+    string line;
+    int x = 0;
+
+
+    ifstream File;
+    File.open("projict_File.txt");
+    ofstream temp;
+    temp.open("temp.txt");
+
+    do {
+
+        cout << "1- If you want delete first name : " << endl;
+        cout << "2- If you want delete last name : " << endl;
+        cout << "3- If you want delete number :" << endl;
+        cout << "4- If you want delete email :" << endl;
+        cout << "5- If you want delete job: " << endl;
+        cout << "6- If you want close enter : " << endl;
+        cout << " Select action >>  ";
+        cin >> x;
+        cout << " \n";
+
+
+        switch (x)
+        {
+        case 1:
+            cout << "Enter first name ? \n";
+            cin >> oldline;
+            cout << "enter new first name \n";
+            cin >> editline;
+            while (getline(File, line))
+            {
+                if (line.find(oldline) != string::npos)
+                {
+
+                    temp << "first name :" << editline << endl;
+                }
+                else
+                {
+
+
+                    temp << line << endl;
+
+                }
+            }
+
+
+            break;
+
+
+        case 2:
+            cout << "Enter last name ? \n";
+            cin >> oldline;
+            cout << "enter new last name \n";
+            cin >> editline;
+            while (getline(File, line))
+            {
+                if (line.find(oldline) != string::npos)
+                {
+
+                    temp << "last name :" << editline << endl;
+                }
+                else
+                {
+
+
+                    temp << line << endl;
+
+                }
+            }
+
+            break;
+
+
+        case 3:
+            cout << "Enter number name ? \n";
+            cin >> oldline;
+            cout << "enter new number name \n";
+            cin >> editline;
+            while (getline(File, line))
+            {
+                if (line.find(oldline) != string::npos)
+                {
+
+                    temp << "number:" << editline << endl;
+                }
+                else
+                {
+
+
+                    temp << line << endl;
+
+                }
+            }
+
+            break;
+
+        case 4:
+            cout << "Enter email ? \n";
+            cin >> oldline;
+            cout << "enter new email \n";
+            cin >> editline;
+            while (getline(File, line))
+            {
+                if (line.find(oldline) != string::npos)
+                {
+
+                    temp << "email:" << editline << endl;
+                }
+                else
+                {
+
+
+                    temp << line << endl;
+
+                }
+            }
+
+            break;
+
+        case 5:
+            cout << "Enter job ? \n";
+            cin >> oldline;
+            cout << "enter new job \n";
+            cin >> editline;
+            while (getline(File, line))
+            {
+                if (line.find(oldline) != string::npos)
+                {
+
+                    temp << "job :" << editline << endl;
+                }
+                else
+                {
+
+
+                    temp << line << endl;
+
+                }
+            }
+
+            break;
+        }
+
+    } while (x != 6);
+
+    temp.close();
+    File.close();
+    remove("projict_File.txt");
+    rename("temp.txt", "projict_File.txt");
+
+}
+
+int main()
+{
+    char ans;
+    do {
+
+        int choice;
+        cout << "\\1.add new number \\2.delete \\3.Display \\4.search \\5.delete all \\6.edit \\7.exit\n";
+        cout << "\Enter Your Choice \n";
+        cin >> choice;
+        switch (choice) {
+        case 1:
+            insert();
+            break;
+
+        case 2:
+            delete_node();
+            break;
+
+        case 3:
+            display();
+            break;
+
+        case 4:
+            searching();
+            break;
+
+        case 5:
+        {
+            //delete the file with all data
+            remove("projict_File.txt");
+            cout << "all data removed \n";
+            break;
+        }
+
+        case 6:
+            edit_node();
+            break;
+
+        case 7:
+
+            break;
+        }
+        cout << "\Do You want To Continue? (Y/N) \n";
+        cin >> ans;
+    } while (ans == 'Y' || ans == 'y');
+}
